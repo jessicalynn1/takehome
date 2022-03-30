@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+  <body>
+    <section>
+<div class="container">
+    <div class="col1">
+        <br>
+
+  <img src="/static/img/honeydew.jpg" alt="honeydew.jpg">
+</div>
+
+<div class="col2">
+    <br>
+    <h1>Here are your upcoming reservations </h1>
+    <br>
+    <body>
+  <ul id="reservation-list">
+      {% for item in reservationlst %}
+        <li> {{ item }}</li>
+        {% endfor %}
+    </body>
+    <br>
+    <h3>We hope you have a sweet (melon) time and you musk tell your friends! </h3>
+    </div>
+
+
+</div>
+</section>
+</body>
+{% endblock %}
