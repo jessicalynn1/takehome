@@ -13,13 +13,23 @@
 
 <div class="col2">
     <br>
-    <h1>Please pick your preferred date and time </h1>
+    <h1>Please pick your preferred date </h1>
+    <form action="/results" method="POST">
     <p>
-        <input type="date"/>
+        <input type="date" name='date'/>
       </p>
+      <h2>Please pick a reservation window </h2>
+      <p>
+        <input type="time" name="start"/>
+      </p>
+      <p>
+        <input type="time" name="end"/>
+      </p>
+      <p>
+        <input type="submit">
+      </p>
+    </form>
 </div>
-
-
 </div>
 </section>
 </body>

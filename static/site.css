@@ -57,11 +57,13 @@ body {
 .col1 {
     width: 50%;
     float: left;
+    text-align: center;
 }
 
 .col2 {
     width:50%;
     float: right;
+    text-align: center;
 }
 
 .col3 {

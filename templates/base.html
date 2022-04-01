@@ -23,13 +23,13 @@
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      {% if #USER in session %}
+      {% if "user" in session %}
       <a class="navbar-brand" href="/user_profile"> <img src="/static/img/honeydew.jpg" alt="logo" class="logo"> </a>
       {% else %}
       <a class="navbar-brand" href="/"> <img src="/static/img/honeydew.jpg" alt="logo" class="logo"> </a>
       {% endif %}
       <a class="nav-link active" aria-current="page" href="/">Home</a>
-      {% if #USER in session %}
+      {% if "user" in session %}
       <a class="nav-link active" href="/user_profile">See Saved</a>
       {% endif %}
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,12 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup" style="float: left; justify-content: end;">
 
-  
+      </div>
+    </div>
+    </div>
+  </div>
+  </div>
+    </nav>
   <body>
       {% for msg in get_flashed_messages() %}
         <p class="flash-msg">
