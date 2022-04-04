@@ -13,17 +13,22 @@
 
 <div class="col2">
     <br>
-    <h1>Here are your upcoming reservations {{ name}}</h1>
+    <h1>Please choose a reservation time </h1>
     <br>
     <body>
-      <h2>For {{ date }}</h2>
       <ul id="reservation_times">
-          {% for item in reservation_times %}
-            <li> {{ item }} Pick this time </li>
+        {% for reservation in reservation_times %}
+            <ul> Date: {{ reservation.date }} <br> Time: {{reservation.time}}
+              <form action="/user_profile" method="POST"> 
+              <input type="hidden" id="date" name="date" value={{reservation.date}}>
+              <input type="hidden" id="time" name="time" value={{reservation.time}}>
+              <br>
+              <input type="submit" value="Choose this time">
+              </ul>
             {% endfor %}
         </body>
+      </form> 
     <br>
-    <h3>We hope you have a sweet (melon) time and you musk tell all your friends! </h3>
     </div>
 
 </div>

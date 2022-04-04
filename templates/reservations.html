@@ -16,15 +16,17 @@
     <h1>Please pick your preferred date </h1>
     <form action="/results" method="POST">
     <p>
-        <input type="date" name='date'/>
+      <input type="date" id="date" name="date"
+      value="2022-01-01"
+      min="2022-01-01" max="2022-12-31" required>
       </p>
       <h2>Please pick a reservation window </h2>
-      <p>
-        <input type="time" name="start"/>
-      </p>
-      <p>
-        <input type="time" name="end"/>
-      </p>
+      <p>From:</p>
+      <input type="time" id="start" name="start"
+             min="00:00" max="23:59">
+      <p>To:</p>
+      <input type="time" id="end" name="end"
+             min="00:00" max="23:59">
       <p>
         <input type="submit">
       </p>

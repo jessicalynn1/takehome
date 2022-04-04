@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+  <body>
+    <section>
+<div class="container">
+    <div class="col1">
+        <br>
+
+  <img src="/static/img/melons.jpg" alt="melons.jpg">
+</div>
+
+<div class="col2">
+    <br>
+    <h1>Here are your reservations </h1>
+    <ol id="reservation_list">
+        <br>
+            <ul id="reservations-body">
+                 {% for reservation in reservationlst %}
+                  <li> {{ reservation }} </li>
+                  {% endfor %}
+        </body>
+    <br>
+    <h3>We hope you have a sweet (melon) time and you musk tell all your friends! </h3>
+</div>
+</div>
+</section>
+</body>
+{% endblock %}

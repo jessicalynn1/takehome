@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-import datetime
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -12,7 +12,7 @@ class User(db.Model):
     id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
-    name = db.Column(db.String, unique=False)
+    name = db.Column(db.String, unique=True)
 
     def __repr__(self):
         return f'<User id={self.id} name={self.name}>'
@@ -26,8 +26,9 @@ class Reservation(db.Model):
     id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    time = db.column(db.DateTime(timezone=True))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    date = db.Column(db.String, nullable=False)
+    time = db.Column(db.String, nullable=False)
 
     user = db.relationship("User", backref="reservations")
 
@@ -49,5 +50,5 @@ def connect_to_db(app, db_uri="postgresql:///reservations", echo=False):
 
 
 if __name__ == "__main__":
-    from server import app
+    from app import app
     connect_to_db(app)

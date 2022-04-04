@@ -15,25 +15,47 @@ def get_user_by_id(id):
     return User.query.get(id)
 
 
-def save_reservation(id, user_id, time):
-    """Reservations"""
+def save_reservation(date, time, user_id=None):
+    """Create reservation"""
     
-    id = Reservation(id=id)
-    user_id = User(user_id=user_id)
+    date = Reservation(date=date)
     time = Reservation(time=time)
     
-    result = Reservation(id=id, user_id=user_id, time=time)
+    result = Reservation(user_id=user_id, date=date, time=time)
 
     return result
 
+def create_timeslots(date, time, user_id=None):
+    """Create and return a a new timeslot."""
 
-def print_reservations(id):
+    reservation = Reservation(date=date, time=time, user_id=user_id)
+    
+    return reservation
+
+def show_available_reservations(date, start=None, end=None):
+    """Return all available reservations given a date, start and end time"""
+    
+    if start and end:
+        return Reservation.query.filter(Reservation.date == date, Reservation.time>start, Reservation.time<end, Reservation.user_id == None).all()
+    elif start and not end:
+        return Reservation.query.filter(Reservation.date == date, Reservation.time>start, Reservation.user_id == None).all()
+    elif end and not start:
+        return Reservation.query.filter(Reservation.date == date, Reservation.time<end, Reservation.user_id == None).all()
+    else:
+        return Reservation.query.filter(Reservation.date == date, Reservation.user_id == None).all()
+
+def check_user_res_by_date(date, user_id):
+    """Check if user already has reservation for that date and time."""
+    
+    return Reservation.query.filter(Reservation.date == date, Reservation.user_id == user_id).first() 
+
+def print_reservations(user_id):
     """Print all reservations on user profile page"""
 
-    return Reservation.query.filter_by(id=id).all()
+    return Reservation.query.filter_by(user_id=user_id).all()
 
 
 
 if __name__ == '__main__':
-    from server import app
+    from app import app
     connect_to_db(app)
