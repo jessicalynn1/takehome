@@ -57,35 +57,39 @@ def save_reservation():
     """Route to save reservation to user profile"""
 
     name = session["user"]
-    user = User.query.filter_by(name=name).first()
+    user = User.query.filter(User.name == name).first()
+    print(user)
     user_id = user.id
     date = request.form.get('date')
     time = request.form.get('time')
 
     checked_res = crud.check_user_res_by_date(date, user_id)
+    print(checked_res)
 
     if checked_res:
         flash ("This time slot is not available.")
         return redirect("reservations.html")
     else:
-        reservationlst = crud.save_reservation(date=date, time=time, user_id=user_id)
-        db.session.add(reservationlst)
-        db.session.commit()
-        return redirect("/user_profile")
+        saved_res = crud.save_reservation(user_id=user_id, date=date, time=time)
+        # db.session.add(saved_res)
+        # db.session.commit()
+        # print(saved_res)
+        return redirect("user_profile.html")
 
 
 @app.route("/user_profile")
 def user_profile():
     """Show the user_profile page"""
+    
+    name = session["user"]
+    user = User.query.filter(User.name == name).first()
+    user_id = user.id
+    date = request.form.get('date')
+    time = request.form.get('time')
 
-    # name = session["user"]
-    # user = User.query.filter_by(name=name).first()
-    # print(user)
-    # user_id = user.id
-
-    # reservationlst = crud.print_reservations(user_id=user_id)
+    saved_res = crud.save_reservation(date=date, time=time, user_id=user_id)
  
-    return render_template("user_profile.html")
+    return render_template("user_profile.html", saved_res=saved_res)
 
 
 

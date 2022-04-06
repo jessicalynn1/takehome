@@ -15,13 +15,16 @@ def get_user_by_id(id):
     return User.query.get(id)
 
 
-def save_reservation(date, time, user_id=None):
+def save_reservation(user_id, date, time):
     """Create reservation"""
     
+    user_id = User(id=user_id)
     date = Reservation(date=date)
     time = Reservation(time=time)
     
     result = Reservation(user_id=user_id, date=date, time=time)
+    db.session.add(result)
+    db.session.commit()
 
     return result
 

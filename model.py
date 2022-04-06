@@ -26,7 +26,7 @@ class Reservation(db.Model):
     id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     date = db.Column(db.String, nullable=False)
     time = db.Column(db.String, nullable=False)
 
