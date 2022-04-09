@@ -42,12 +42,22 @@ def reservations():
 def results_page():
     """Show the results page"""
 
-    name = request.form.get('name')
+    name = session["user"]
     date =request.form.get('date')
     start = request.form.get('start')
     end = request.form.get('end')
+    user = User.query.filter(User.name == name).first()
+    user_id = user.id
+    #add some code that forces time picked to be :00 or :30
 
     reservation_times = crud.show_available_reservations(date, start, end)
+
+    checked_res = crud.check_user_res_by_date(date, user_id)
+    print(checked_res)
+
+    if checked_res:
+        flash ("This time slot is not available.")
+        return redirect("reservations.html")
     
     return render_template("results.html", reservation_times=reservation_times, name=name, date=date)
 
@@ -63,18 +73,18 @@ def save_reservation():
     date = request.form.get('date')
     time = request.form.get('time')
 
-    checked_res = crud.check_user_res_by_date(date, user_id)
-    print(checked_res)
+    # checked_res = crud.check_user_res_by_date(date, user_id)
+    # print(checked_res)
 
-    if checked_res:
-        flash ("This time slot is not available.")
-        return redirect("reservations.html")
-    else:
-        saved_res = crud.save_reservation(user_id=user_id, date=date, time=time)
+    # if checked_res:
+    #     flash ("This time slot is not available.")
+    #     return redirect("reservations.html")
+    # else:
+    saved_res = crud.save_reservation(user_id=user_id, date=date, time=time)
         # db.session.add(saved_res)
         # db.session.commit()
         # print(saved_res)
-        return redirect("user_profile.html")
+    return redirect("save_reservation.html")
 
 
 @app.route("/user_profile")
@@ -84,14 +94,13 @@ def user_profile():
     name = session["user"]
     user = User.query.filter(User.name == name).first()
     user_id = user.id
-    date = request.form.get('date')
-    time = request.form.get('time')
+    print("User object", user)
+    # print(user_id)
 
-    saved_res = crud.save_reservation(date=date, time=time, user_id=user_id)
+    saved_res = Reservation.query.filter(user_id == user_id).all()
+    print("Saved_res object", saved_res)
  
     return render_template("user_profile.html", saved_res=saved_res)
-
-
 
 
 if __name__ == "__main__":

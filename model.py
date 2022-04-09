@@ -26,14 +26,14 @@ class Reservation(db.Model):
     id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
     date = db.Column(db.String, nullable=False)
     time = db.Column(db.String, nullable=False)
 
     user = db.relationship("User", backref="reservations")
 
     def __repr__(self):
-        return f'<Reservation id={self.id} user_id={self.user_id} time={self.time} '
+        return f'<Reservation id={self.id} user_id={self.user_id} time={self.time}>'
 
 
 def connect_to_db(app, db_uri="postgresql:///reservations", echo=False):

@@ -15,23 +15,31 @@ def get_user_by_id(id):
     return User.query.get(id)
 
 
+# def save_reservation(user_id, date, time):
+#     """Create reservation"""
+    
+#     user_id = User(id=user_id)
+#     date = Reservation(date=date)
+#     time = Reservation(time=time)
+    
+#     result = Reservation(user_id=user_id, date=date, time=time)
+#     db.session.add(result)
+#     db.session.commit()
+
+#     return result
+
 def save_reservation(user_id, date, time):
     """Create reservation"""
-    
-    user_id = User(id=user_id)
-    date = Reservation(date=date)
-    time = Reservation(time=time)
-    
-    result = Reservation(user_id=user_id, date=date, time=time)
-    db.session.add(result)
-    db.session.commit()
 
+    result = db.session.query(Reservation).filter(Reservation.time == time, Reservation.date == date).update({'user_id': user_id})
+    db.session.commit()
+    
     return result
 
 def create_timeslots(date, time, user_id=None):
     """Create and return a a new timeslot."""
 
-    reservation = Reservation(date=date, time=time, user_id=user_id)
+    reservation = Reservation(date=date, time=time, user_id=None)
     
     return reservation
 
