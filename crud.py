@@ -15,26 +15,18 @@ def get_user_by_id(id):
     return User.query.get(id)
 
 
-# def save_reservation(user_id, date, time):
-#     """Create reservation"""
-    
-#     user_id = User(id=user_id)
-#     date = Reservation(date=date)
-#     time = Reservation(time=time)
-    
-#     result = Reservation(user_id=user_id, date=date, time=time)
-#     db.session.add(result)
-#     db.session.commit()
-
-#     return result
-
 def save_reservation(user_id, date, time):
     """Create reservation"""
-
+    
+    user_id = User(id=user_id)
+    date = Reservation(date=date)
+    time = Reservation(time=time)
+    
     result = db.session.query(Reservation).filter(Reservation.time == time, Reservation.date == date).update({'user_id': user_id})
     db.session.commit()
-    
+
     return result
+
 
 def create_timeslots(date, time, user_id=None):
     """Create and return a a new timeslot."""
@@ -42,6 +34,7 @@ def create_timeslots(date, time, user_id=None):
     reservation = Reservation(date=date, time=time, user_id=None)
     
     return reservation
+
 
 def show_available_reservations(date, start=None, end=None):
     """Return all available reservations given a date, start and end time"""
@@ -55,11 +48,13 @@ def show_available_reservations(date, start=None, end=None):
     else:
         return Reservation.query.filter(Reservation.date == date, Reservation.user_id == None).all()
 
+
 def check_user_res_by_date(date, user_id):
     """Check if user already has reservation for that date and time."""
     
     return Reservation.query.filter(Reservation.date == date, Reservation.user_id == user_id).first() 
 
+ 
 def print_reservations(user_id):
     """Print all reservations on user profile page"""
 
