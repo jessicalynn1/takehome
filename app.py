@@ -19,9 +19,6 @@ app.jinja_env.undefined = StrictUndefined
 def welcome_page():
     """Show the Welcome page"""
 
-    # if 'user' in session:
-    #     return redirect('user_profile')
-
     return render_template("homepage.html")
 
 
@@ -32,11 +29,15 @@ def reservations():
     name = request.form.get('name')
 
     if name:
-        session["user"] = name
-        flash(f"welcome, {name}!")
-        u_name = crud.create_user(name)
-        db.session.add(u_name)
-        db.session.commit()
+        if not User.query.filter(User.name == name).first():
+            session["user"] = name
+            flash(f"welcome, {name}!")
+            u_name = crud.create_user(name)
+            db.session.add(u_name)
+            db.session.commit()
+        else:
+            session["user"] = name
+            flash(f"welcome, {name}!")
 
     return render_template("reservations.html")
 
@@ -71,8 +72,11 @@ def save_reservation():
     name = session["user"]
     user = User.query.filter(User.name == name).first()
     user_id = user.id
-    date = request.form.get('date')
-    time = request.form.get('time')
+    reservation_id = request.form.get('reservation_id')
+
+    res = Reservation.query.get(reservation_id)
+    date = res.date
+    time = res.time
 
     checked_res = crud.check_user_res_by_date(date, user_id)
 
@@ -81,21 +85,29 @@ def save_reservation():
         return redirect("reservations.html")
     else:
         saved_res = crud.save_reservation(user_id=user_id, date=date, time=time)
-        # db.session.add(saved_res)
-        # db.session.commit()
 
-        return redirect("/user_profile")
+        return redirect("/save_reservation")
 
 
-@app.route("/user_profile")
+@app.route("/user_profile", methods=['POST'])
 def user_profile():
     """Show the user_profile page"""
     
     name = session["user"]
     user = User.query.filter(User.name == name).first()
     user_id = user.id
+    # date = request.form.get('date')
+    # time = request.form.get('time')
 
-    saved_res = Reservation.query.filter(user_id == user_id).all()
+    # checked_res = crud.check_user_res_by_date(date, user_id)
+
+    # if checked_res:
+    #     flash ("This time slot is not available.")
+    #     return redirect("reservations.html")
+    # else:
+    #     crud.save_reservation(user_id=user_id, date=date, time=time)
+
+    saved_res = Reservation.query.filter(Reservation.user_id == user_id).all()
  
     return render_template("user_profile.html", saved_res=saved_res)
 

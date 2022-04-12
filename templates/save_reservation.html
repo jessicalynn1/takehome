@@ -13,14 +13,26 @@
 
 <div class="col2">
     <br>
-    <h1>Here are your reservations </h1>
+    <!-- <h1>Here are your reservations </h1>
     <ol id="reservation_list">
         <br>
             <ul id="reservations-body">
                  {% for reservation in saved_res %}
                   <li> {{ reservation }} </li>
                   {% endfor %}
-        </body>
+        </body> -->
+        <body> 
+        <ul id="reservation_times">
+        {% for reservation in reservations %}
+        <form action="/save_reservation" method="POST">
+        <br>
+        <button type="submit" name="reservation_id" value="{{ reservation.id }}">
+            Choose {{ reservation.date }} at {{ reservation.time }}?
+        </button>
+        {% endfor %}
+    </ul>
+    </body>    
+    </form>
     <br>
     <h3>We hope you have a sweet (melon) time and you musk tell all your friends! </h3>
 </div>
