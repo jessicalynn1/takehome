@@ -15,20 +15,20 @@
     <br>
     <h1>Please choose a reservation time </h1>
     <br>
+
     <body>
       <ul id="reservation_times">
-        {% for reservation in reservation_times %}
-            <ul> Date: {{ reservation.date }} <br> Time: {{reservation.time}}
-              <form action="/save_reservation" method="POST"> 
-              <input type="hidden" id="date" name="date" value={{reservation.date}}>
-              <input type="hidden" id="time" name="time" value={{reservation.time}}>
-              <br>
-              <input type="submit" value="Choose this time">
-              </ul>
-            {% endfor %}
-        </body>
-      </form> 
-    <br>
+      {% for reservation in reservations %}
+      <form action="/save_reservation" method="POST" method="GET">
+        <br>
+        <button type="submit" name="reservation_id" value="{{ reservation.id }}">
+          Choose {{ reservation.date }} at {{ reservation.time }}?
+        </button>
+        {% endfor %}
+      </body>
+    </form>
+    
+      <br>
     </div>
 
 </div>

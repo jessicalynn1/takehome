@@ -15,14 +15,10 @@ def get_user_by_id(id):
     return User.query.get(id)
 
 
-def save_reservation(user_id, date, time):
+def save_reservation(user_id, reservation_id):
     """Create reservation"""
-    
-    user_id = User(id=user_id)
-    date = Reservation(date=date)
-    time = Reservation(time=time)
-    
-    result = db.session.query(Reservation).filter(Reservation.time == time, Reservation.date == date).update({'user_id': user_id})
+     
+    result = db.session.query(Reservation).filter(Reservation.id == reservation_id).update({'user_id': user_id})
     db.session.commit()
 
     return result

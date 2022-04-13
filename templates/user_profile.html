@@ -18,7 +18,7 @@
         <br>
             <ul id="reservations-body">
                  {% for reservation in saved_res %}
-                  <li> {{ reservation }} </li>
+                  <li> Date: {{ reservation.date }} Time: {{ reservation.time }}</li>
                   {% endfor %}
         </body>
     <br>

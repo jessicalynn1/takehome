@@ -54,27 +54,28 @@ def results_page():
     user_id = user.id
     #add some code that forces time picked to be :00 or :30
 
-    reservation_times = crud.show_available_reservations(date, start, end)
+    reservation_list = crud.show_available_reservations(date, start, end)
 
     checked_res = crud.check_user_res_by_date(date, user_id)
 
     if checked_res:
         flash ("This time slot is not available.")
-        return redirect("reservations.html")
     
-    return render_template("results.html", reservation_times=reservation_times, name=name, date=date)
+        return render_template("results.html", reservations=reservation_list)
 
 
-@app.route("/save_reservation", methods=['POST'])
+@app.route("/save_reservation", methods=['POST', 'GET'])
 def save_reservation():
     """Route to save reservation to user profile"""
 
     name = session["user"]
     user = User.query.filter(User.name == name).first()
     user_id = user.id
-    reservation_id = request.form.get('reservation_id')
+    reservation_id = request.form.get("reservation_id")
+    print(reservation_id)
 
     res = Reservation.query.get(reservation_id)
+    print(res)
     date = res.date
     time = res.time
 
@@ -82,30 +83,20 @@ def save_reservation():
 
     if checked_res:
         flash ("This time slot is not available.")
-        return redirect("reservations.html")
+        return redirect("/reservations")
     else:
-        saved_res = crud.save_reservation(user_id=user_id, date=date, time=time)
+        saved_res = crud.save_reservation(user_id=user_id, reservation_id=res.id)
 
-        return redirect("/save_reservation")
+        return redirect("/user_profile")
 
 
-@app.route("/user_profile", methods=['POST'])
+@app.route("/user_profile")
 def user_profile():
     """Show the user_profile page"""
     
     name = session["user"]
     user = User.query.filter(User.name == name).first()
     user_id = user.id
-    # date = request.form.get('date')
-    # time = request.form.get('time')
-
-    # checked_res = crud.check_user_res_by_date(date, user_id)
-
-    # if checked_res:
-    #     flash ("This time slot is not available.")
-    #     return redirect("reservations.html")
-    # else:
-    #     crud.save_reservation(user_id=user_id, date=date, time=time)
 
     saved_res = Reservation.query.filter(Reservation.user_id == user_id).all()
  
